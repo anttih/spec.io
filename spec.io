@@ -7,7 +7,7 @@ Spec := Object clone do(
     )
 )
 
-Context := Object clone do(
+Spec Context := Object clone do(
     init := method(
         self name := nil
         self tests := list()
@@ -15,7 +15,7 @@ Context := Object clone do(
     )
 
     describe := method(name,
-        spec := Context clone
+        spec := self clone
         spec name = name
         sub append(spec)
         spec
@@ -26,7 +26,7 @@ Context := Object clone do(
     )
 )
 
-Runner := Object clone do(
+Spec Runner := Object clone do(
 
     init := method(
         self reporter ::= nil
@@ -84,7 +84,7 @@ Runner := Object clone do(
     )
 )
 
-SilentReporter := Object clone do(
+Spec SilentReporter := Object clone do(
     fail := method(cont, name, e,
         context := cont join(" ")
         m := e coroutine callStack at(0) message
@@ -99,5 +99,18 @@ SilentReporter := Object clone do(
         file := m label
         line := m lineNumber
         self writeln("ERROR: #{e error}. File #{file}, line #{line}." interpolate)
+    )
+)
+
+Spec LobbyCollector := Object clone do(
+    collect := method(
+        suite := list()
+        Lobby foreachSlot(slotName, slotValue,
+            if(getSlot("slotValue") isActivatable not and \
+               slotValue isKindOf(Spec Context),
+                suite append(slotValue)
+            )
+        )
+        suite
     )
 )

@@ -1,7 +1,8 @@
+Spec
 
-SilentReporterTest := UnitTest clone do(
+Spec SilentReporterTest := UnitTest clone do(
     setUp := method(
-        self reporter := SilentReporter clone do(
+        self reporter := Spec SilentReporter clone do(
             buffer := list()
             writeln := method(seq, buffer append(seq))
         )

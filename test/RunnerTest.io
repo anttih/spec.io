@@ -19,23 +19,10 @@ BaseTest := UnitTest clone do(
     )
 
     setUp := method(
-        self runner := Runner with(self spec)
+        self runner := Spec Runner with(self spec)
         self reporter := ReporterStub clone
         runner setReporter(reporter)
         runner run
-    )
-)
-
-SpecAsList := UnitTest clone do(
-    setUp := method(
-        self runner := Runner with(list(
-            Spec describe("Spec")
-        ))
-    )
-
-    test_has_a_suite_with_one_spec := method(
-        assert(runner suite size == 1)
-        assert(runner suite at(0) type == "Context")
     )
 )
 
