@@ -38,12 +38,13 @@ Runner := Object clone do(
 
     with := method(suite,
         runner := self clone
+        suite = if(suite isKindOf(List), suite, list(suite))
         runner suite = suite
         runner
     )
 
     run := method(
-        _runContext(suite)
+        _runSuite(suite)
         reporter ?done(failures, errors)
     )
 
@@ -55,6 +56,10 @@ Runner := Object clone do(
     error := method(path, test, e,
         errors append(list(path, test, e))
         reporter ?error(path, test, e)
+    )
+
+    _runSuite := method(suite,
+        suite foreach(context, _runContext(context))
     )
 
     _runContext := method(context,
@@ -74,7 +79,7 @@ Runner := Object clone do(
             )
         )
 
-        context sub foreach(child, _runContext(child))
+        _runSuite(context sub)
         stack pop
     )
 )

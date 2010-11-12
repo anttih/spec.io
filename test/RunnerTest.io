@@ -26,8 +26,25 @@ BaseTest := UnitTest clone do(
     )
 )
 
+SpecAsList := UnitTest clone do(
+    setUp := method(
+        self runner := Runner with(list(
+            Spec describe("Spec")
+        ))
+    )
+
+    test_has_a_suite_with_one_spec := method(
+        assert(runner suite size == 1)
+        assert(runner suite at(0) type == "Context")
+    )
+)
+
 SpecWithNoTests := BaseTest clone do(
     withSpec(Spec describe("No errors"))
+
+    test_should_normalize_to_list_of_contexts := method(
+        assert(runner suite isKindOf(List))
+    )
 
     test_has_no_errors := method(
         assertEquals(runner errors size, 0)
