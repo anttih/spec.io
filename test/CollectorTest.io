@@ -105,5 +105,14 @@ LobbyCollectorTest := UnitTest clone do(
     )
 )
 
+DirectoryCollectorTest := UnitTest clone do(
+    
+    test_collects_files_ending_in_spec := method(
+        dir := Spec DirectoryCollector with(System launchPath ..  "/test/spec/testdir")
+        suite := dir collect
+        assertEquals(suite size, 1)
+    )
+)
+
 if(isLaunchScript, FileCollector clone run)
 

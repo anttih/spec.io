@@ -114,3 +114,23 @@ Spec LobbyCollector := Object clone do(
         suite
     )
 )
+
+Spec DirectoryCollector := Object clone do(
+    path ::= nil
+
+    with := method(path, setPath(path))
+
+    testFiles := method(
+        Directory with(path) files select(name endsWithSeq("Spec.io"))
+    )
+
+    collect := method(
+        # do each file in a Context
+        suite := list()
+        testFiles foreach(file,
+            suite append(Spec describe(file name) doRelativeFile(file path))
+        )
+        suite
+    )
+)
+
