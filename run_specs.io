@@ -1,6 +1,6 @@
 
 Spec do(
     Runner with(
-        DirectoryCollector with("./examples") collect
+        DSLDirectoryCollector with("./spec") collect
     ) setReporter(SilentReporter clone) run
 )
