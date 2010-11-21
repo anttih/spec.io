@@ -191,3 +191,15 @@ SpecWithOneFailure := BaseTest clone do(
         assertEquals(reporter failureMessage at(0) at(2) type, "AssertionException")
     )
 )
+
+SpecWithTwoTestsReferencingSameSlot := BaseTest clone do(
+    withSpec(Spec describe("Spec") do(
+        first := false
+        it("First", first := true)
+        it("Second", context first = ?first)
+    ))
+
+    test_tests_dont_share_slots := method(
+        assertEquals(spec first, nil)
+    )
+)

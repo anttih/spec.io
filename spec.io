@@ -9,6 +9,8 @@ Spec := Object clone do(
 
 Spec Context := Object clone do(
     init := method(
+        self hook_before := nil
+
         self name := nil
         self tests := list()
         self sub := list()
@@ -24,6 +26,8 @@ Spec Context := Object clone do(
     it := method(name,
         tests append(list(name, call argAt(1)))
     )
+
+    before := method(hook_before = call argAt(0))
 )
 
 Spec Runner := Object clone do(
@@ -68,7 +72,13 @@ Spec Runner := Object clone do(
         path := stack map(name)
         context tests foreach(test,
             e := try(
-                self doMessage(test at(1))
+                cont := Object clone
+                cont context := context
+                if(context hook_before isNil not,
+                    cont doMessage(context hook_before)
+                )
+
+                cont doMessage(test at(1))
                 reporter ?ok(path, test at(0))
             )
 
