@@ -15,7 +15,7 @@ describe("spec with one test") do(
         )
     )
 
-    it("has one test", s tests size should equal(1))
+    it("has one test", s should have(1) tests)
     it("has has test with name", s tests at(0) at(0) should equal("Test name"))
 
     it("has test which is a message",
@@ -33,8 +33,8 @@ describe("spec with nested spec") do(
     )
 
     it("has spec with name", s sub at(0) name should equal("Nested"))
-    it("has one nested spec", s sub size should equal(1))
-    it("has one nested test", s sub at(0) tests size should equal(1))
+    it("has one nested spec", s should have(1) sub)
+    it("has one nested test", s sub at(0) should have(1) tests)
     it("has one nested test with name and message",
         test := s sub at(0) tests at(0)
         test at(0) should equal("Test name")
@@ -51,7 +51,7 @@ describe("spec with deeply nested specs") do(
         )
     )
 
-    it("has deeply nested spec", s sub at(0) sub size should equal(1))
+    it("has deeply nested spec", s sub at(0) should have(1) sub)
     it("has deeply nested spec with name",
         s sub at(0) sub at(0) name should equal("Deep")
     )
