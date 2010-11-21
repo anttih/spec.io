@@ -1,2 +1,3 @@
 
-describe("Test spec")
+describe("Test spec") do()
+describe("Another spec") do()
