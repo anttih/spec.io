@@ -134,3 +134,22 @@ Spec DirectoryCollector := Object clone do(
     )
 )
 
+Spec DSLDirectoryCollector := Object clone do(
+    path ::= nil
+
+    with := method(path, setPath(path))
+
+    testFiles := method(
+        Directory with(path) files select(name endsWithSeq(".spec.io"))
+    )
+
+    collect := method(
+        # do each file in a Context
+        suite := list()
+        testFiles foreach(file,
+            suite append(Spec describe(file name) doRelativeFile(file path))
+        )
+        suite
+    )
+)
+

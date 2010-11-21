@@ -24,9 +24,25 @@ LobbyCollectorTest := UnitTest clone do(
 DirectoryCollectorTest := UnitTest clone do(
     
     test_collects_files_ending_in_spec := method(
-        dir := Spec DirectoryCollector with(System launchPath ..  "/test/spec/testdir")
+        dir := Spec DirectoryCollector with(System launchPath ..  "/test/spec")
         suite := dir collect
         assertEquals(suite size, 1)
+    )
+)
+
+DSLCollector := UnitTest clone do(
+
+    setUp := method(
+        dir := Spec DSLDirectoryCollector with(System launchPath ..  "/test/spec/dotspecs")
+        self suite := dir collect
+    )
+
+    test_collects_files_ending_in_dot_spec := method(
+        assertEquals(suite size, 1)
+    )
+
+    test_context_has_name := method(
+        assertEquals(suite at(0) name, "Test spec")
     )
 )
 
