@@ -8,7 +8,7 @@ SpecAsList := UnitTest clone do(
 
     test_has_a_suite_with_one_spec := method(
         assert(runner suite size == 1)
-        assert(runner suite at(0) type == "Context")
+        assert(runner suite at(0) type == "Spec")
     )
 )
 
@@ -17,7 +17,7 @@ LobbyCollectorTest := UnitTest clone do(
         Lobby doRelativeFile("spec/TestSpec.io")
         suite := Spec LobbyCollector collect
         assertEquals(suite size, 1)
-        assert(suite at(0) isKindOf(Spec Context))
+        assert(suite at(0) isKindOf(Spec))
     )
 )
 

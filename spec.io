@@ -1,13 +1,5 @@
 
 Spec := Object clone do(
-    describe := method(name,
-        spec := Context clone
-        spec name = name
-        spec
-    )
-)
-
-Spec Context := Object clone do(
     init := method(
         self hook_before := nil
 
@@ -19,7 +11,11 @@ Spec Context := Object clone do(
     describe := method(name,
         spec := self clone
         spec name = name
-        sub append(spec)
+        # Make this method work as a "static" method
+        # when the receiver is the type itself. That is, don't
+        # make the newly created spec a sub-spec of the proto for
+        # the first `Spec describe()`.
+        if(self hasSlot("sub"), sub append(spec))
         spec
     )
 
@@ -63,10 +59,10 @@ Spec Runner := Object clone do(
     )
 
     _runSuite := method(suite,
-        suite foreach(context, _runContext(context))
+        suite foreach(context, _runSpec(context))
     )
 
-    _runContext := method(context,
+    _runSpec := method(context,
         stack append(context)
         # list of context names
         path := stack map(name)
@@ -116,8 +112,10 @@ Spec LobbyCollector := Object clone do(
     collect := method(
         suite := list()
         Lobby foreachSlot(slotName, slotValue,
+            # a spec is an object which is not activatable,
+            # is kind of Spec but is not the Spec root object.
             if(getSlot("slotValue") isActivatable not and \
-               slotValue isKindOf(Spec Context),
+               slotValue isKindOf(Spec) and slotValue != Spec,
                 suite append(slotValue)
             )
         )
@@ -135,7 +133,7 @@ Spec DirectoryCollector := Object clone do(
     )
 
     collect := method(
-        # do each file in a Context
+        # do each file in a Spec
         suite := list()
         testFiles foreach(file,
             suite append(Spec describe(file name) doRelativeFile(file path))
@@ -154,7 +152,7 @@ Spec DSLDirectoryCollector := Object clone do(
     )
 
     collect := method(
-        # do each file in a Context
+        # do each file in a Spec
         suite := list()
         testFiles foreach(file,
             suite append(Spec describe(file name) doRelativeFile(file path))

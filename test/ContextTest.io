@@ -1,3 +1,9 @@
+SpecTest := UnitTest clone do(
+    test_root_spec_does_not_set_subs := method(
+        spec := Spec describe("Spec name")
+        assert(Spec hasSlot("sub") not)
+    )
+)
 
 EmptySpecTest := UnitTest clone do(
     setUp := method(
