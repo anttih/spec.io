@@ -161,3 +161,42 @@ Spec DSLDirectoryCollector := Object clone do(
     )
 )
 
+Spec Matcher := Object clone do(
+    with := method(value,
+        matcher := self clone
+        matcher value := value
+        matcher
+    )
+
+    be_true := method(
+        equal(true)
+    )
+
+    be_false := method(
+        equal(false)
+    )
+
+    be_nil := method(
+        equal(nil)
+    )
+
+    be_empty := method(
+        assert(
+            value size == 0,
+            "Object is not empty, size is #{value size}." interpolate
+        )
+    )
+
+    equal := method(expected,
+        assert(
+            value == expected,
+            "#{value asSimpleString} does not equal #{expected}." interpolate
+        )
+    )
+)
+
+Object do(
+    should := method(
+        Spec Matcher with(self)
+    )
+)
