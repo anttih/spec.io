@@ -193,6 +193,21 @@ Spec Matcher := Object clone do(
             "#{value asSimpleString} does not equal #{expected}." interpolate
         )
     )
+
+    have := method(n,
+        have_matcher := self with(value) do(
+            forward := method(
+                slot_name := call message name
+                slot := value getSlot(slot_name)
+                assert(
+                    slot size == count,
+                    "Object does not have exactly #{count} #{slot_name}." interpolate
+                )
+            )
+        )
+        have_matcher count := n
+        have_matcher
+    )
 )
 
 Object do(

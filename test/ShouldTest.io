@@ -62,4 +62,24 @@ ShouldTest := UnitTest clone do(
     test_be_empty_succeeds_for_empty_list := method(
         list() should be_empty
     )
+
+    test_have_one_succeeds_for_list_with_size_one := method(
+        o := Object clone do(items := list(1))
+        o should have(1) items
+    )
+
+    test_have_one_fails_for_list_with_no_items := method(
+        o := Object clone do(items := list())
+        assertFails(o should have(1) items)
+    )
+
+    test_have_two_fails_for_list_with_size_1 := method(
+        o := Object clone do(items := list(1))
+        assertFails(o should have(2) items)
+    )
+
+    test_have_fails_with_custom_message := method(
+        o := Object clone do(items := list())
+        assertFails(o should have(1) items, "Object does not have exactly 1 items.")
+    )
 )
