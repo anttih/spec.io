@@ -108,6 +108,22 @@ Spec SilentReporter := Object clone do(
     )
 )
 
+Spec StoryReporter := Object clone do(
+    init := method(
+        self current := nil
+    )
+
+    ok := method(context, name,
+        topic := context join("")
+        if(topic != current,
+            current = topic
+            self writeln
+            self writeln(topic)
+        )
+        self writeln("  ✓" .. (" #{name}" interpolate))
+    )
+)
+
 Spec LobbyCollector := Object clone do(
     collect := method(
         suite := list()
