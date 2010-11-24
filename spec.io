@@ -172,7 +172,7 @@ Spec DSLDirectoryCollector := Object clone do(
         suite := list()
         testFiles foreach(file,
             spec := Spec describe(file name)
-            spec doRelativeFile(file path)
+            spec doFile(file path)
             suite append(spec)
         )
         suite
