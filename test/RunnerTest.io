@@ -194,12 +194,13 @@ SpecWithOneFailure := BaseTest clone do(
 
 SpecWithTwoTestsReferencingSameSlot := BaseTest clone do(
     withSpec(Spec describe("Spec") do(
-        first := false
-        it("First", first := true)
-        it("Second", context first = ?first)
+        first := ""
+        it("First", first = first .. "hello")
+        it("Second", first = first .. " world")
     ))
 
-    test_tests_dont_share_slots := method(
-        assertEquals(spec first, nil)
+    test_tests_share_slot := method(
+        assertEquals(spec first, "hello world")
     )
 )
+
