@@ -16,7 +16,9 @@ describe("spec with one test") do(
     )
 
     it("has one test", s should have(1) tests)
-    it("has has test with name", s tests at(0) at(0) should equal("Test name"))
+    it("has has test with name",
+        s tests at(0) at(0) should equal("Test name")
+    )
 
     it("has test which is a message",
         s tests at(0) at(1) type should equal("Message")
@@ -39,6 +41,9 @@ describe("spec with nested spec") do(
         test := s sub at(0) tests at(0)
         test at(0) should equal("Test name")
         test at(1) type should equal("Message")
+    )
+    it("has parent as proto",
+        assert(s sub at(0) ancestors at(1) hasProto(s))
     )
 )
 
