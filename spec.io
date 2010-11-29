@@ -68,8 +68,10 @@ Spec Runner := Object clone do(
         path := stack map(name)
         context tests foreach(test,
             e := try(
-                if(context hook_before isNil not,
-                    context doMessage(context hook_before)
+                stack foreach(c,
+                    if(c hook_before isNil not,
+                        context doMessage(c hook_before)
+                    )
                 )
 
                 context doMessage(test at(1))
