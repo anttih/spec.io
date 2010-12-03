@@ -68,12 +68,7 @@ Spec Runner := Object clone do(
         path := stack map(name)
         context tests foreach(test,
             e := try(
-                stack foreach(c,
-                    if(c hook_before isNil not,
-                        context doMessage(c hook_before)
-                    )
-                )
-
+                _runBefore(context, stack)
                 context doMessage(test at(1))
                 reporter ?ok(path, test at(0))
             )
@@ -87,6 +82,15 @@ Spec Runner := Object clone do(
 
         _runSuite(context sub)
         stack pop
+    )
+
+    // runs all before hooks from a list of contexts
+    _runBefore := method(current, stack,
+        stack foreach(c,
+            if(c hook_before isNil not,
+                current doMessage(c hook_before)
+            )
+        )
     )
 )
 
