@@ -96,7 +96,6 @@ Spec Runner := Object clone do(
 
 Spec SilentReporter := Object clone do(
     fail := method(cont, name, e,
-        context := cont join(" ")
         m := e coroutine callStack at(0) message
         file := m label
         line := m lineNumber
@@ -104,7 +103,6 @@ Spec SilentReporter := Object clone do(
     )
 
     error := method(cont, name, e,
-        context := cont join(" ")
         m := e coroutine callStack at(0) message
         file := m label
         line := m lineNumber
