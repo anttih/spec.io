@@ -116,7 +116,7 @@ Spec StoryReporter := Object clone do(
     )
 
     ok := method(context, name,
-        topic := context join("")
+        topic := context join(" ")
         if(topic != current,
             current = topic
             self writeln

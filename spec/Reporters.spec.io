@@ -40,14 +40,17 @@ describe("Story reporter") do(
         )
     )
 
-    assertLines := method(lines,
-        reporter lines should equal(lines)
+    assertLines := method(
+        reporter lines join("\n") should equal(call evalArgs join("\n"))
     )
 
     it("prints topic name if no topic printed",
         reporter ok(list("Spec name"), "Test name")
-        reporter lines at(0) should equal(nil)
-        reporter lines at(1) should equal("Spec name")
+        assertLines(
+            nil,
+            "Spec name",
+            "  ✓ Test name"
+        )
     )
 
     it("prints same topic name once",
@@ -56,10 +59,12 @@ describe("Story reporter") do(
 
         reporter should have(4) lines
 
-        reporter lines at(0) should equal(nil)
-        reporter lines at(1) should equal("Spec name")
-        reporter lines at(2) should equal("  ✓ Test name")
-        reporter lines at(3) should equal("  ✓ Test name 2")
+        assertLines(
+            nil,
+            "Spec name",
+            "  ✓ Test name",
+            "  ✓ Test name 2"
+        )
     )
 
     it("separates topic with one blank line",
@@ -68,11 +73,18 @@ describe("Story reporter") do(
 
         reporter should have(6) lines
 
-        reporter lines at(0) should equal(nil)
-        reporter lines at(1) should equal("Spec name")
-        reporter lines at(2) should equal("  ✓ Test name")
-        reporter lines at(3) should equal(nil)
-        reporter lines at(4) should equal("Spec name 2")
-        reporter lines at(5) should equal("  ✓ Test name 2")
+        assertLines(
+            nil,
+            "Spec name",
+            "  ✓ Test name",
+            nil,
+            "Spec name 2",
+            "  ✓ Test name 2"
+        )
+    )
+
+    it("joins context path parts as topic",
+        reporter ok(list("Topic", "name"), "Test name")
+        assertLines(nil, "Topic name", "  ✓ Test name")
     )
 )
