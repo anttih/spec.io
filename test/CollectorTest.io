@@ -42,7 +42,7 @@ DSLCollector := UnitTest clone do(
     )
 
     test_has_file_name_as_spec_name := method(
-        assertEquals(suite at(0) name, "DSLTestSpec.spec.io")
+        assertEquals(suite at(0) name, "DSLTestSpec:")
     )
 
     test_first_context_has_name := method(
