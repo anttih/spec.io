@@ -71,3 +71,13 @@ describe("spec with before") do(
 
     it("has before message", s hook_before type should equal("Message"))
 )
+
+describe("putting code as second param to describe") do(
+    before(
+        s := Spec describe("Spec name", it("test name", Nop))
+    )
+
+    it("should work the same as do()",
+        s should have(1) tests
+    )
+)

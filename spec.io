@@ -16,6 +16,10 @@ Spec := Object clone do(
         # make the newly created spec a sub-spec of the proto for
         # the first `Spec describe()`.
         if(self hasSlot("sub"), sub append(spec))
+
+        # support describe("Name", it(...))
+        if(call argAt(1) isNil not, spec doMessage(call argAt(1)))
+
         spec
     )
 
