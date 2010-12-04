@@ -97,3 +97,65 @@ describe("spec with nested tests") do(
         reporter okMessages at(1) at(1) should equal("Inner test")
     )
 )
+
+describe("spec with several nested contexts") do(
+    withSpec(Spec describe("Spec") do(
+        it("Parent test", nil)
+        describe("nested") do(
+            it("Inner test", nil)
+        )
+        describe("second nested") do(
+            it("Second Inner test", nil)
+        )
+    ))
+
+    it("reports ok for second test in second context",
+        params := reporter okMessages at(2)
+        params at(0) should equal(list("Spec", "second nested"))
+        params at(1) should equal("Second Inner test")
+    )
+)
+
+describe("spec with one error") do(
+    withSpec(Spec describe("Spec") do(
+        it("Erroring test", Exception raise("Message"))
+    ))
+
+    it("has one error", runner should have(1) errors)
+    it("reports one error", reporter should have(1) errorMessages)
+
+    describe("reports error with") do(
+        before(params := reporter errorMessages at(0))
+        it("context", params at(0) should equal(list("Spec")))
+        it("test", params at(1) should equal("Erroring test"))
+        it("exception", params at(2) type should equal("Exception"))
+    )
+)
+
+describe("spec with one failure") do(
+    withSpec(Spec describe("Spec") do(
+        it("Failing test", AssertionException raise("Failure"))
+    ))
+
+    it("has one failure", runner should have(1) failures)
+    it("reports one failure", reporter should have(1) failureMessages)
+
+    describe("reports failure with") do(
+        before(params := reporter failureMessages at(0))
+        it("context", params at(0) should equal(list("Spec")))
+        it("test", params at(1) should equal("Failing test"))
+        it("exception", params at(2) type should equal("AssertionException"))
+    )
+)
+
+describe("spec with two tests referencing same slot") do(
+    withSpec(Spec describe("Spec") do(
+        first := ""
+        it("First", first = first .. "hello")
+        it("Second", first = first .. " world")
+    ))
+
+    it("shares that slot with both tests",
+        spec first should equal("hello world")
+    )
+)
