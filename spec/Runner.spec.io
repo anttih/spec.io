@@ -21,7 +21,7 @@ before(
     runner run
 )
 
-describe("spec with no tests") do(
+describe("spec with no tests",
     withSpec(Spec describe("Empty"))
 
     it("normalizes to list of contexts",
@@ -37,8 +37,8 @@ describe("spec with no tests") do(
     )
 )
 
-describe("spec with one successful test") do(
-    withSpec(Spec describe("Spec") do(it("Success", nil)))
+describe("spec with one successful test",
+    withSpec(Spec describe("Spec",it("Success", nil)))
 
     it("reports ok once", reporter should have(1) okMessages)
     it("reports ok with context path and test name",
@@ -46,9 +46,9 @@ describe("spec with one successful test") do(
     )
 )
 
-describe("spec with nested successful test") do(
-    withSpec(Spec describe("Spec") do(
-        describe("Nested") do(it("Inner test", nil))
+describe("spec with nested successful test",
+    withSpec(Spec describe("Spec",
+        describe("Nested",it("Inner test", nil))
     ))
 
     it("reports ok with context path and test name",
@@ -58,8 +58,8 @@ describe("spec with nested successful test") do(
     )
 )
 
-describe("spec with two successful tests") do(
-    withSpec(Spec describe("Spec") do(
+describe("spec with two successful tests",
+    withSpec(Spec describe("Spec",
         it("Test one", nil)
         it("Test two", nil)
     ))
@@ -75,10 +75,10 @@ describe("spec with two successful tests") do(
     )
 )
 
-describe("spec with nested tests") do(
-    withSpec(Spec describe("Spec") do(
+describe("spec with nested tests",
+    withSpec(Spec describe("Spec",
         it("Parent test", nil)
-        describe("nested") do(
+        describe("nested",
             it("Inner test", nil)
         )
     ))
@@ -98,13 +98,13 @@ describe("spec with nested tests") do(
     )
 )
 
-describe("spec with several nested contexts") do(
-    withSpec(Spec describe("Spec") do(
+describe("spec with several nested contexts",
+    withSpec(Spec describe("Spec",
         it("Parent test", nil)
-        describe("nested") do(
+        describe("nested",
             it("Inner test", nil)
         )
-        describe("second nested") do(
+        describe("second nested",
             it("Second Inner test", nil)
         )
     ))
@@ -116,15 +116,15 @@ describe("spec with several nested contexts") do(
     )
 )
 
-describe("spec with one error") do(
-    withSpec(Spec describe("Spec") do(
+describe("spec with one error",
+    withSpec(Spec describe("Spec",
         it("Erroring test", Exception raise("Message"))
     ))
 
     it("has one error", runner should have(1) errors)
     it("reports one error", reporter should have(1) errorMessages)
 
-    describe("reports error with") do(
+    describe("reports error with",
         before(params := reporter errorMessages at(0))
         it("context", params at(0) should equal(list("Spec")))
         it("test", params at(1) should equal("Erroring test"))
@@ -132,15 +132,15 @@ describe("spec with one error") do(
     )
 )
 
-describe("spec with one failure") do(
-    withSpec(Spec describe("Spec") do(
+describe("spec with one failure",
+    withSpec(Spec describe("Spec",
         it("Failing test", AssertionException raise("Failure"))
     ))
 
     it("has one failure", runner should have(1) failures)
     it("reports one failure", reporter should have(1) failureMessages)
 
-    describe("reports failure with") do(
+    describe("reports failure with",
         before(params := reporter failureMessages at(0))
         it("context", params at(0) should equal(list("Spec")))
         it("test", params at(1) should equal("Failing test"))
@@ -148,8 +148,8 @@ describe("spec with one failure") do(
     )
 )
 
-describe("spec with two tests referencing same slot") do(
-    withSpec(Spec describe("Spec") do(
+describe("spec with two tests referencing same slot",
+    withSpec(Spec describe("Spec",
         first := ""
         it("First", first = first .. "hello")
         it("Second", first = first .. " world")
