@@ -1,3 +1,13 @@
+Protos AssertionException := Exception clone
+
+Object do(
+    assert := method(v, m,
+        if(true != v,
+            m ifNil(m = "true != (#{ call argAt(0) })" interpolate)
+            AssertionException raise(m)
+        )
+    )
+)
 
 Spec := Object clone do(
     init := method(
